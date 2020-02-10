@@ -1,21 +1,24 @@
+
+import datetime
 from flask import Flask, render_template, Response
 import cv2
 import threading
 app = Flask(__name__)
 camera = cv2.VideoCapture(0)
-frame =None
+frame=None
 # use 0 for web camera
 #  for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 def Capturepic():
     while True:
         success,frame_read = camera.read()  # read the camera frame
+        cv2.putText(frame_read,str(datetime.datetime.now()), (0,50 ), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
         ret,buffer = cv2.imencode('.jpg', frame_read,encode_param)
         global frame 
         frame = buffer.tobytes()
         f=open('live_pic.jpg','w+b')
 	f.write(frame)
-	f.close()
+        f.close()
 #cv2.putText(encode_param, 'text', (10, 40), cv2.FONT_HERSHEY_SIMPLEX,
 #  1, (0, 255, 255), 1, cv2.LINE_AA)
 def gen_frames():  # generate frame by frame from camera
