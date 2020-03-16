@@ -1,4 +1,4 @@
-
+from time import *
 import datetime
 from flask import Flask, render_template, Response
 import cv2
@@ -25,7 +25,8 @@ def gen_frames():  # generate frame by frame from camera
     while True:
 	
 	yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result		
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result	
+	sleep(0.15)
 	
 	
 
